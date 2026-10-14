@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="1100" viewBox="0 0 680 1100" role="img">
+<title>JLR-MOST-Amp: блок-схема</title>
+<desc>Сигнали: оптика кільця через FOT RX і FOT TX іде на OS8104A; OS8104A віддає приймачі й такти ESP32 і формує S/PDIF на TOSLINK і коаксіал; ESP32 обробляє звук, віддає його на PCM5122 і роз'єм I2S, керує REM. Живлення: +12 В через захист іде на ключ REM і черговий LDO, що живить FOT RX у сні; світло або HOLD від ESP32 вмикає buck 3.3 В і аналоговий LDO.</desc>
+<defs>
+<style>
+text { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+.sec { font-size: 16px; font-weight: 600; fill: #2C2C2A; }
+.th { font-size: 14px; font-weight: 600; fill: #2C2C2A; }
+.ts { font-size: 12px; fill: #5F5E5A; }
+.box { fill: #F1EFE8; stroke: #888780; stroke-width: 0.75; }
+.chip { fill: #EEEDFE; stroke: #534AB7; stroke-width: 0.75; }
+.chip-th { font-size: 14px; font-weight: 600; fill: #3C3489; }
+.chip-ts { font-size: 12px; fill: #534AB7; }
+.sleep { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.75; }
+.sleep-th { font-size: 14px; font-weight: 600; fill: #085041; }
+.sleep-ts { font-size: 12px; fill: #0F6E56; }
+.arr { stroke: #5F5E5A; stroke-width: 1.2; fill: none; }
+.clk { stroke: #1D9E75; stroke-width: 1.2; stroke-dasharray: 4 3; fill: none; }
+</style>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<rect width="680" height="1100" fill="#FFFFFF"/>
+
+<text class="sec" x="40" y="34">Сигнали</text>
+<g transform="translate(0,20)">
+<rect class="box" x="40" y="44" width="130" height="56" rx="8"/>
+<text class="th" x="105" y="62" text-anchor="middle" dominant-baseline="central">FOT RX</text>
+<text class="ts" x="105" y="82" text-anchor="middle" dominant-baseline="central">оптика з кільця</text>
+<rect class="box" x="40" y="124" width="130" height="56" rx="8"/>
+<text class="th" x="105" y="142" text-anchor="middle" dominant-baseline="central">FOT TX</text>
+<text class="ts" x="105" y="162" text-anchor="middle" dominant-baseline="central">оптика в кільце</text>
+<rect class="box" x="40" y="290" width="130" height="56" rx="8"/>
+<text class="th" x="105" y="308" text-anchor="middle" dominant-baseline="central">Телефон</text>
+<text class="ts" x="105" y="328" text-anchor="middle" dominant-baseline="central">Bluetooth, Wi-Fi</text>
+<rect class="box" x="40" y="362" width="130" height="56" rx="8"/>
+<text class="th" x="105" y="380" text-anchor="middle" dominant-baseline="central">Перемикач</text>
+<text class="ts" x="105" y="400" text-anchor="middle" dominant-baseline="central">і світлодіод</text>
+<rect class="chip" x="220" y="40" width="180" height="144" rx="8"/>
+<text class="chip-th" x="310" y="92" text-anchor="middle" dominant-baseline="central">OS8104A</text>
+<text class="chip-ts" x="310" y="114" text-anchor="middle" dominant-baseline="central">кільце й такти</text>
+<text class="chip-ts" x="310" y="134" text-anchor="middle" dominant-baseline="central">S/PDIF на SX0</text>
+<rect class="chip" x="220" y="260" width="180" height="160" rx="8"/>
+<text class="chip-th" x="310" y="318" text-anchor="middle" dominant-baseline="central">ESP32-WROVER-IE</text>
+<text class="chip-ts" x="310" y="340" text-anchor="middle" dominant-baseline="central">вузол і обробка звуку</text>
+<text class="chip-ts" x="310" y="360" text-anchor="middle" dominant-baseline="central">антена U.FL</text>
+<rect class="box" x="470" y="44" width="170" height="44" rx="8"/>
+<text class="th" x="555" y="66" text-anchor="middle" dominant-baseline="central">TOSLINK</text>
+<rect class="box" x="470" y="108" width="170" height="56" rx="8"/>
+<text class="th" x="555" y="126" text-anchor="middle" dominant-baseline="central">Коаксіал</text>
+<text class="ts" x="555" y="146" text-anchor="middle" dominant-baseline="central">0.5 В на 75 Ом</text>
+<rect class="box" x="470" y="250" width="170" height="56" rx="8"/>
+<text class="th" x="555" y="268" text-anchor="middle" dominant-baseline="central">PCM5122</text>
+<text class="ts" x="555" y="288" text-anchor="middle" dominant-baseline="central">RCA L/R, 2.1 Vrms</text>
+<rect class="box" x="470" y="326" width="170" height="56" rx="8"/>
+<text class="th" x="555" y="344" text-anchor="middle" dominant-baseline="central">Роз'єм I2S</text>
+<text class="ts" x="555" y="364" text-anchor="middle" dominant-baseline="central">MCLK BCK LRCK DATA</text>
+<rect class="box" x="470" y="402" width="170" height="56" rx="8"/>
+<text class="th" x="555" y="420" text-anchor="middle" dominant-baseline="central">Ключ REM</text>
+<text class="ts" x="555" y="440" text-anchor="middle" dominant-baseline="central">+12 В із захистом</text>
+<line class="arr" x1="170" y1="72" x2="218" y2="72" marker-end="url(#a)"/>
+<line class="arr" x1="220" y1="152" x2="172" y2="152" marker-end="url(#a)"/>
+<line class="arr" x1="300" y1="186" x2="300" y2="258" marker-end="url(#a)"/>
+<line class="arr" x1="350" y1="258" x2="350" y2="186" marker-end="url(#a)"/>
+<text class="ts" x="290" y="212" text-anchor="end" dominant-baseline="central">↓ приймачі 1–4, такти</text>
+<text class="ts" x="290" y="234" text-anchor="end" dominant-baseline="central">↑ потік для S/PDIF, I2C</text>
+<line class="arr" x1="170" y1="318" x2="218" y2="318" stroke-dasharray="4 3" marker-end="url(#a)"/>
+<line class="arr" x1="172" y1="390" x2="218" y2="390" marker-start="url(#a)" marker-end="url(#a)"/>
+<line class="arr" x1="400" y1="66" x2="468" y2="66" marker-end="url(#a)"/>
+<line class="arr" x1="400" y1="136" x2="468" y2="136" marker-end="url(#a)"/>
+<path class="clk" d="M400 172 L440 172 L440 342 L468 342" marker-end="url(#c)"/>
+<line class="clk" x1="440" y1="262" x2="468" y2="262" marker-end="url(#c)"/>
+<line class="arr" x1="400" y1="290" x2="468" y2="290" marker-end="url(#a)"/>
+<line class="arr" x1="400" y1="362" x2="468" y2="362" marker-end="url(#a)"/>
+<line class="arr" x1="400" y1="414" x2="468" y2="414" marker-end="url(#a)"/>
+<line class="clk" x1="40" y1="486" x2="72" y2="486"/>
+<text class="ts" x="80" y="486" dominant-baseline="central">такти кільця: FSY, SCK, RMCK</text>
+</g>
+
+<text class="sec" x="40" y="560">Живлення</text>
+<g transform="translate(0,546)">
+<rect class="box" x="40" y="40" width="160" height="56" rx="8"/>
+<text class="th" x="120" y="58" text-anchor="middle" dominant-baseline="central">+12 В</text>
+<text class="ts" x="120" y="78" text-anchor="middle" dominant-baseline="central">з роз'єму</text>
+<rect class="box" x="250" y="40" width="180" height="56" rx="8"/>
+<text class="th" x="340" y="58" text-anchor="middle" dominant-baseline="central">Захист</text>
+<text class="ts" x="340" y="78" text-anchor="middle" dominant-baseline="central">і LC-фільтр</text>
+<rect class="box" x="480" y="40" width="160" height="56" rx="8"/>
+<text class="th" x="560" y="58" text-anchor="middle" dominant-baseline="central">Ключ REM</text>
+<text class="ts" x="560" y="78" text-anchor="middle" dominant-baseline="central">вихід REM +12 В</text>
+<rect class="sleep" x="250" y="136" width="180" height="56" rx="8"/>
+<text class="sleep-th" x="340" y="154" text-anchor="middle" dominant-baseline="central">Черговий LDO</text>
+<text class="sleep-ts" x="340" y="174" text-anchor="middle" dominant-baseline="central">мікроамперний</text>
+<rect class="sleep" x="480" y="136" width="160" height="56" rx="8"/>
+<text class="sleep-th" x="560" y="154" text-anchor="middle" dominant-baseline="central">FOT RX</text>
+<text class="sleep-ts" x="560" y="174" text-anchor="middle" dominant-baseline="central">чує світло</text>
+<rect class="box" x="40" y="232" width="160" height="56" rx="8"/>
+<text class="th" x="120" y="250" text-anchor="middle" dominant-baseline="central">HOLD</text>
+<text class="ts" x="120" y="270" text-anchor="middle" dominant-baseline="central">від ESP32</text>
+<rect class="chip" x="250" y="232" width="180" height="56" rx="8"/>
+<text class="chip-th" x="340" y="250" text-anchor="middle" dominant-baseline="central">WAKE</text>
+<text class="chip-ts" x="340" y="270" text-anchor="middle" dominant-baseline="central">світло АБО HOLD</text>
+<rect class="box" x="40" y="328" width="160" height="56" rx="8"/>
+<text class="th" x="120" y="346" text-anchor="middle" dominant-baseline="central">Buck 3.3 В</text>
+<text class="ts" x="120" y="366" text-anchor="middle" dominant-baseline="central">з +12 В, від 2 МГц</text>
+<rect class="box" x="480" y="328" width="160" height="56" rx="8"/>
+<text class="th" x="560" y="346" text-anchor="middle" dominant-baseline="central">LDO 3.3 В</text>
+<text class="ts" x="560" y="366" text-anchor="middle" dominant-baseline="central">з +12 В, аналоговий</text>
+<rect class="box" x="40" y="424" width="260" height="76" rx="8"/>
+<text class="th" x="170" y="444" text-anchor="middle" dominant-baseline="central">Цифрова частина</text>
+<text class="ts" x="170" y="464" text-anchor="middle" dominant-baseline="central">ESP32, OS8104A, FOT TX</text>
+<text class="ts" x="170" y="482" text-anchor="middle" dominant-baseline="central">TOSLINK, буфери</text>
+<rect class="box" x="480" y="424" width="160" height="56" rx="8"/>
+<text class="th" x="560" y="442" text-anchor="middle" dominant-baseline="central">PCM5122</text>
+<text class="ts" x="560" y="462" text-anchor="middle" dominant-baseline="central">аналогова частина</text>
+<line class="arr" x1="200" y1="68" x2="248" y2="68" marker-end="url(#a)"/>
+<line class="arr" x1="430" y1="68" x2="478" y2="68" marker-end="url(#a)"/>
+<line class="arr" x1="340" y1="96" x2="340" y2="134" marker-end="url(#a)"/>
+<line class="arr" x1="430" y1="164" x2="478" y2="164" marker-end="url(#a)"/>
+<path class="arr" d="M560 192 L560 260 L432 260" marker-end="url(#a)"/>
+<line class="arr" x1="200" y1="260" x2="248" y2="260" marker-end="url(#a)"/>
+<path class="arr" d="M300 288 L300 308 L120 308 L120 326" marker-end="url(#a)"/>
+<path class="arr" d="M380 288 L380 308 L560 308 L560 326" marker-end="url(#a)"/>
+<line class="arr" x1="120" y1="384" x2="120" y2="422" marker-end="url(#a)"/>
+<line class="arr" x1="560" y1="384" x2="560" y2="422" marker-end="url(#a)"/>
+<rect class="sleep" x="40" y="520" width="24" height="14" rx="3"/>
+<text class="ts" x="72" y="527" dominant-baseline="central">живе у сні</text>
+</g>
+</svg>
