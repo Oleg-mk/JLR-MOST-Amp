@@ -75,17 +75,17 @@ def esp32_wrover_ie():
     pins += topbot(top, h + 2.54 + PL, 0, 270) + topbot(bot, -(h + 2.54 + PL), -3.81, 90)
     return dict(name="ESP32-WROVER-IE", ref="U", value="ESP32-WROVER-IE-N16R8",
                 desc="Wi-Fi + Bluetooth module, ESP32-D0WD-V3, 16 MB flash, 8 MB PSRAM, U.FL antenna connector",
-                footprint="", body=(-15.24, h + 2.54, 15.24, -(h + 2.54)), pins=pins)
+                footprint="jlr_most_amp:ESP32-WROVER-E", body=(-15.24, h + 2.54, 15.24, -(h + 2.54)), pins=pins)
 
 
 def fot_header():
     right = [("8", "RXD", "output"), ("7", "STATUS", "output"), None, ("4", "RGAIN", "passive"), ("1", "TXD", "input")]
     top = [("5", "RXVCC", "power_in"), None, ("3", "TXVCC", "power_in")]
-    bot = [("6", "RXGND", "power_in"), ("2", "TXGND", "power_in"), ("SH", "SHIELD", "passive")]
+    bot = [("6", "RXGND", "power_in"), ("2", "TXGND", "power_in"), ("0", "SHIELD", "passive")]
     pins = side(right, 15.24, 5.08, 180) + topbot(top, 12.7 + PL - 2.54, -2.54, 270) + topbot(bot, -(10.16 + PL), -2.54, 90)
     return dict(name="TE_1-1394640-1", ref="J", value="TE 1-1394640-1",
                 desc="MOST25 2+0 POF header with FOT receiver (STATUS low = light) and transmitter",
-                footprint="", body=(-10.16, 10.16, 10.16, -10.16), pins=pins)
+                footprint="jlr_most_amp:TE_MOST_Pigtail_FOT_2+0", body=(-10.16, 10.16, 10.16, -10.16), pins=pins)
 
 
 def ap64200q():
@@ -119,10 +119,16 @@ def plt133():
     pins = side(left, -10.16, 0, 0) + topbot(top, 5.08 + PL, 0, 270) + topbot(bot, -(5.08 + PL), 0, 90)
     return dict(name="PLT133", ref="U", value="PLT133/T10W",
                 desc="TOSLINK transmitter, 660 nm, Vcc 2.75..3.25 V or 4.75..5.25 V (Everlight)",
-                footprint="", body=(-5.08, 5.08, 5.08, -5.08), pins=pins)
+                footprint="jlr_most_amp:Everlight_TOSLINK_T10", body=(-5.08, 5.08, 5.08, -5.08), pins=pins)
 
 
-ALL = [os8104a, esp32_wrover_ie, fot_header, ap64200q, tps1h200a, plt133]
+def rca():
+    pins = [("1", "In", "passive", -7.62, 0, 0), ("2", "Ext", "passive", 0, -7.62, 90), ("3", "Aux", "passive", 7.62, 0, 180)]
+    return dict(name="RCA", ref="J", value="RCA", desc="RCA jack, right angle: 1 centre, 2 shell, 3 the third pin (left free)",
+                footprint="jlr_most_amp:BKL_0101153_RCA_RA", body=(-2.54, 2.54, 2.54, -2.54), pins=pins)
+
+
+ALL = [os8104a, esp32_wrover_ie, fot_header, ap64200q, tps1h200a, plt133, rca]
 
 
 def lib_text(sym, libname=None):

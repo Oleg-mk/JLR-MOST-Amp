@@ -1,4 +1,5 @@
 """Small KiCad 10 schematic writer: symbols, short pin stubs, labels, power symbols."""
+import re
 import uuid
 import kilib
 import symdefs
@@ -60,6 +61,11 @@ class Sym:
         self.props = props or {}
         self.dnp = dnp
         lib, name = lib_id.split(":")
+        if lib == CUSTOM_LIB and not fp:
+            self.fp = CUSTOM[name]["footprint"]
+        elif not fp and not ref.startswith("#"):
+            m = re.search(r'\(property "Footprint" "([^"]*)"', kilib.lib_symbol(lib, name))
+            self.fp = m.group(1) if m else ""
         if lib == CUSTOM_LIB:
             self.pins = symdefs.pins_as_lib(CUSTOM[name])
         else:

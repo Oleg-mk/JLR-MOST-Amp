@@ -46,7 +46,7 @@ s.text("R1 і R5 - послідовне узгодження ліній RX і TX
 
 j2 = s.add("jlr_most_amp:TE_1-1394640-1", "J2", "TE 1-1394640-1", 59.69, 130.81,
            nets={"8": "FOT_RXD", "7": "FOT_STATUS", "4": "FOT_RGAIN", "1": "FOT_TXD",
-                 "5": "FOT_RXVCC", "3": "FOT_TXVCC", "6": "GND", "2": "GND", "SH": "GND"},
+                 "5": "FOT_RXVCC", "3": "FOT_TXVCC", "6": "GND", "2": "GND", "0": "GND"},
            props=lbl((49.53, 116.84), (30.48, 152.4)))
 # receiver supply (always on)
 FB(s, "FB1", 29.21, 69.85, "+3V3_AON", "FOT_RXVCC")
@@ -120,7 +120,6 @@ s.text("ESP32-WROVER-IE. I2S0: SX1 -> IO18, потік для S/PDIF IO26 -> SR1
 s.text("Усі чотири секції I2S ведені від BCK (IO34) і LRCK (IO35) з OS8104A.", 15.24, 29.21)
 s.text("IO36 і IO39 - лише входи без підтяжок, тому тут клавіші перемикача з R22..R25. IO0, IO2, IO5, IO12, IO15 задають режим старту; IO12 лишається вільним.", 15.24, 33.02)
 u2 = s.add("jlr_most_amp:ESP32-WROVER-IE", "U2", "ESP32-WROVER-IE-N16R8", 200.66, 133.35,
-           fp="",
            nets={"3": "ESP_EN", "25": "ESP_IO0", "35": "ESP_TXD0", "34": "ESP_RXD0",
                  "6": "BCK", "7": "LRCK", "4": "MODE2", "5": "MODE3",
                  "8": "REM_EN", "9": "HOLD", "10": "DOUT", "11": "SPDIF_SRC", "12": "MOST_RST",
@@ -139,7 +138,7 @@ j3 = s.add("Connector_Generic:Conn_01x06", "J3", "Програмування", 6
            nets={"1": "GND", "2": "ESP_TXD0", "3": "ESP_RXD0", "4": "ESP_EN", "5": "ESP_IO0", "6": "WAKE_FORCE"},
            props=lbl((58.42, 119.38), (58.42, 142.24)))
 s.text("J3: 1 GND, 2 TXD0 (вихід ESP32), 3 RXD0, 4 EN, 5 IO0, 6 WAKE_FORCE: 3.3 В тут вмикає живлення без світла в кільці.", 15.24, 152.4)
-sw = s.add("Switch:SW_DIP_x04", "SW1", "DP-04 Piano", 304.8, 129.54,
+sw = s.add("Switch:SW_DIP_x04", "SW1", "DP-04 Piano", 304.8, 129.54, fp="Button_Switch_THT:SW_DIP_SPSTx04_Piano_10.8x11.72mm_W7.62mm_P2.54mm",
            nets={"1": "MODE0", "2": "MODE1", "3": "MODE2", "4": "MODE3", "5": "GND", "6": "GND", "7": "GND", "8": "GND"},
            props=lbl((299.72, 119.38), (299.72, 139.7)))
 s.text("SW1: клавіші 1-3 - тип підсилювача, 4 - зчитати номер. Замкнена клавіша = 0.", 279.4, 152.4)
@@ -175,11 +174,11 @@ C(s, "C37", "2.2u", 172.72, 165.1, "DAC_VNEG", "GND", fp=C0805)
 C(s, "C38", "100n", 193.04, 165.1, "DAC_LDOO", "GND")
 R(s, "R32", "470", 157.48, 107.95, "DAC_OUTL", "LINE_L", "h")
 C(s, "C39", "2.2n C0G", 182.88, 115.57, "LINE_L", "GND")
-s.add("Connector:Conn_Coaxial", "J4", "RCA L", 210.82, 107.95, nets={"1": "LINE_L", "2": "GND"},
+s.add("jlr_most_amp:RCA", "J4", "RCA L", 210.82, 107.95, nets={"1": "LINE_L", "2": "GND", "3": None},
       props=lbl((208.28, 101.6), (213.36, 101.6)))
 R(s, "R33", "470", 157.48, 133.35, "DAC_OUTR", "LINE_R", "h")
 C(s, "C40", "2.2n C0G", 182.88, 140.97, "LINE_R", "GND")
-s.add("Connector:Conn_Coaxial", "J5", "RCA R", 210.82, 133.35, nets={"1": "LINE_R", "2": "GND"},
+s.add("jlr_most_amp:RCA", "J5", "RCA R", 210.82, 133.35, nets={"1": "LINE_R", "2": "GND", "3": None},
       props=lbl((208.28, 127.0), (213.36, 127.0)))
 # S/PDIF
 s.text("S/PDIF з SX0 OS8104A: TOSLINK напряму, коаксіал через U4 і дільник 249/107 Ом: 0.5 В на 75 Ом.", 254.0, 60.96)
@@ -190,7 +189,7 @@ C(s, "C41", "100n", 264.16, 80.01, "+3V3", "GND")
 R(s, "R34", "249", 322.58, 101.6, "COAX_DRV", "COAX_MID")
 R(s, "R35", "107", 345.44, 116.84, "COAX_MID", "GND")
 C(s, "C42", "100n", 368.3, 101.6, "COAX_MID", "COAX_OUT")
-s.add("Connector:Conn_Coaxial", "J6", "RCA S/PDIF", 398.78, 116.84, nets={"1": "COAX_OUT", "2": "GND"},
+s.add("jlr_most_amp:RCA", "J6", "RCA S/PDIF", 398.78, 116.84, nets={"1": "COAX_OUT", "2": "GND", "3": None},
       props=lbl((396.24, 110.49), (378.46, 124.46)))
 s.add("jlr_most_amp:PLT133", "U5", "PLT133/T10W", 299.72, 149.86, nets={"3": "SPDIF", "2": "+3V0_TOS", "1": "GND"},
       props=lbl((306.07, 143.51), (306.07, 156.21)))
@@ -327,6 +326,8 @@ for f in symdefs.ALL:
     lib.append(symdefs.lib_text(f()))
 lib.append(")")
 open(os.path.join(OUT, "jlr_most_amp.kicad_sym"), "w", encoding="utf-8", newline="\n").write("\n".join(lib))
+open(os.path.join(OUT, "fp-lib-table"), "w", encoding="utf-8", newline="\n").write(
+    '(fp_lib_table (version 7)\n  (lib (name "jlr_most_amp")(type "KiCad")(uri "${KIPRJMOD}/jlr_most_amp.pretty")(options "")(descr "JLR-MOST-Amp footprints"))\n)\n')
 open(os.path.join(OUT, "sym-lib-table"), "w", encoding="utf-8", newline="\n").write(
     '(sym_lib_table (version 7)\n  (lib (name "jlr_most_amp")(type "KiCad")(uri "${KIPRJMOD}/jlr_most_amp.kicad_sym")(options "")(descr "JLR-MOST-Amp parts"))\n)\n')
 pro = os.path.join(OUT, "jlr_most_amp.kicad_pro")
