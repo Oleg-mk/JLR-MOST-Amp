@@ -14,7 +14,6 @@ POWER = {  # net -> (lib symbol, value)
     "+3V3": ("power:+3V3", "+3V3"),
     "+3V3_AON": ("power:+3V3", "+3V3_AON"),
     "+3V3A": ("power:+3V3", "+3V3A"),
-    "+3V0_TOS": ("power:+3V3", "+3V0_TOS"),
     "+12V": ("power:+12V", "+12V"),
     "+12V_IN": ("power:+12V", "+12V_IN"),
 }

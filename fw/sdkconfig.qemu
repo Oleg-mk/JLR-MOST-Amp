@@ -1,0 +1,15 @@
+# QEMU variant (fw/CMakeLists.txt): QEMU has no Bluetooth radio and no I2S. Its emulated OpenCores Ethernet carries the
+# virtual phone and ring instead (main/vphone.c, tools/vphone.py)
+CONFIG_BT_ENABLED=n
+CONFIG_ETH_USE_OPENETH=y
+# QEMU need not model the ESP32's crypto accelerators: mbedTLS does AES, SHA and RSA in software here, same API
+CONFIG_MBEDTLS_HARDWARE_AES=n
+CONFIG_MBEDTLS_HARDWARE_SHA=n
+CONFIG_MBEDTLS_HARDWARE_MPI=n
+# A panic ends in a CPU reset too (main/wifi_qemu.c), so here it halts instead; restarting QEMU stands for a power cycle
+CONFIG_ESP_SYSTEM_PANIC_PRINT_HALT=y
+# the emulated Ethernet carries the ring's sound to the virtual model besides AirPlay: more receive buffers than
+# the 4 by default, or AirPlay's packets are dropped under that load (tools/vsource.py)
+CONFIG_ETH_OPENETH_DMA_RX_BUFFER_NUM=16
+# QEMU's time runs unevenly under load: the task watchdog only reports here
+CONFIG_ESP_TASK_WDT_PANIC=n

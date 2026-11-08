@@ -75,7 +75,7 @@ def esp32_wrover_ie():
     pins += topbot(top, h + 2.54 + PL, 0, 270) + topbot(bot, -(h + 2.54 + PL), -3.81, 90)
     return dict(name="ESP32-WROVER-IE", ref="U", value="ESP32-WROVER-IE-N16R8",
                 desc="Wi-Fi + Bluetooth module, ESP32-D0WD-V3, 16 MB flash, 8 MB PSRAM, U.FL antenna connector",
-                footprint="jlr_most_amp:ESP32-WROVER-E", body=(-15.24, h + 2.54, 15.24, -(h + 2.54)), pins=pins)
+                footprint="jlr_most_amp:ESP32-WROVER-IE", body=(-15.24, h + 2.54, 15.24, -(h + 2.54)), pins=pins)
 
 
 def fot_header():
@@ -88,15 +88,19 @@ def fot_header():
                 footprint="jlr_most_amp:TE_MOST_Pigtail_FOT_2+0", body=(-10.16, 10.16, 10.16, -10.16), pins=pins)
 
 
-def ap64200q():
-    left = [("2", "VIN", "power_in"), ("3", "EN", "input"), None, ("4", "RT/CLK", "passive")]
-    right = [("1", "BST", "passive"), ("8", "SW", "output"), None, ("5", "FB", "input"), ("6", "COMP", "passive")]
-    bot = [("7", "GND", "power_in"), ("9", "EP", "passive")]
-    pins = side(left, -12.7, 5.08, 0) + side(right, 12.7, 5.08, 180) + topbot(bot, -(10.16 + PL), -1.27, 90)
-    return dict(name="AP64200Q", ref="U", value="AP64200Q",
-                desc="40 V 2 A synchronous buck, 100 kHz..2.2 MHz, SO-8EP (DS43577)",
-                footprint="Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm_ThermalVias",
-                body=(-7.62, 7.62, 7.62, -10.16), pins=pins)
+def lm65625q1():
+    left = [("11", "VIN1", "power_in"), ("17", "VIN2", "power_in"), None, ("7", "EN/UVLO", "input"),
+            ("5", "MODE/SYNC", "input"), ("6", "RT", "input"), ("3", "FB", "input")]
+    right = [("15", "BOOT", "passive"), ("13", "SW1", "passive"), ("14", "SW2", "passive"), None,
+             ("20", "BIAS", "input"), ("4", "VCC", "power_out"), ("2", "PG", "open_collector")]
+    top = [("1", "NC", "no_connect"), ("8", "NC", "no_connect"), ("10", "NC", "no_connect"),
+           ("12", "NC", "no_connect"), ("16", "NC", "no_connect"), ("18", "NC", "no_connect")]
+    bot = [("9", "PGND1", "power_in"), ("19", "PGND2", "power_in"), ("21", "DAP", "passive")]
+    pins = side(left, -15.24, 7.62, 0) + side(right, 15.24, 7.62, 180)
+    pins += topbot(top, 10.16 + PL, -6.35, 270) + topbot(bot, -(10.16 + PL), -2.54, 90)
+    return dict(name="LM65625-Q1", ref="U", value="LM65625-Q1",
+                desc="65 V 2.5 A synchronous buck, fixed 3.3/5 V or adjustable, 0.3..2.2 MHz, tON min 40 ns, WQFN-FCRLF-20 (SNVSCH2A)",
+                footprint="jlr_most_amp:TI_RZT0020A", body=(-10.16, 10.16, 10.16, -10.16), pins=pins)
 
 
 def tps1h200a():
@@ -113,22 +117,39 @@ def tps1h200a():
 
 
 def plt133():
-    left = [("3", "Vin", "input")]
+    left = [("1", "Vin", "input")]
     top = [("2", "Vcc", "power_in")]
-    bot = [("1", "GND", "power_in")]
+    bot = [("3", "GND", "power_in")]
     pins = side(left, -10.16, 0, 0) + topbot(top, 5.08 + PL, 0, 270) + topbot(bot, -(5.08 + PL), 0, 90)
     return dict(name="PLT133", ref="U", value="PLT133/T10W",
-                desc="TOSLINK transmitter, 660 nm, Vcc 2.75..3.25 V or 4.75..5.25 V (Everlight)",
+                desc="TOSLINK transmitter, 660 nm, Vcc 2.7..5.5 V (Everlight DPL-0000049 Rev.5): 1 Vin, 2 Vcc, 3 GND, left to right when facing the port",
                 footprint="jlr_most_amp:Everlight_TOSLINK_T10", body=(-5.08, 5.08, 5.08, -5.08), pins=pins)
 
 
 def rca():
     pins = [("1", "In", "passive", -7.62, 0, 0), ("2", "Ext", "passive", 0, -7.62, 90), ("3", "Aux", "passive", 7.62, 0, 180)]
-    return dict(name="RCA", ref="J", value="RCA", desc="RCA jack, right angle: 1 centre, 2 shell, 3 the third pin (left free)",
+    return dict(name="RCA", ref="J", value="RCA", desc="RCA jack, right angle: 1 centre, 3 the thin pin beside it (the outer contact), 2 the thick legs",
                 footprint="jlr_most_amp:BKL_0101153_RCA_RA", body=(-2.54, 2.54, 2.54, -2.54), pins=pins)
 
 
-ALL = [os8104a, esp32_wrover_ie, fot_header, ap64200q, tps1h200a, plt133, rca]
+def ch340c():
+    # V3 is the output of the internal 3.3 V regulator; with VCC = 3.3 V it is tied to VCC (CH340 data sheet), so here
+    # it is a power input: the library symbol's power output would clash with the LDO output in ERC
+    left = [("5", "UD+", "bidirectional"), ("6", "UD-", "bidirectional"), None,
+            ("7", "NC", "no_connect"), ("8", "NC", "no_connect")]
+    right = [("2", "TXD", "output"), ("3", "RXD", "input"), None, ("13", "~{DTR}", "output"), ("14", "~{RTS}", "output"),
+             None, ("9", "~{CTS}", "input"), ("10", "~{DSR}", "input"), ("11", "~{RI}", "input"),
+             ("12", "~{DCD}", "input"), ("15", "R232", "input")]
+    top = [("16", "VCC", "power_in"), ("4", "V3", "power_in")]
+    bot = [("1", "GND", "power_in")]
+    pins = side(left, -15.24, 2.54, 0) + side(right, 15.24, 12.7, 180)
+    pins += topbot(top, 15.24 + PL, -1.27, 270) + topbot(bot, -(15.24 + PL), 0, 90)
+    return dict(name="CH340C", ref="U", value="CH340C",
+                desc="USB 2.0 full-speed to UART bridge, internal oscillator, SOP-16; V3 tied to VCC for a 3.3 V supply",
+                footprint="Package_SO:SOIC-16_3.9x9.9mm_P1.27mm", body=(-10.16, 15.24, 10.16, -15.24), pins=pins)
+
+
+ALL = [os8104a, esp32_wrover_ie, fot_header, lm65625q1, tps1h200a, plt133, rca, ch340c]
 
 
 def lib_text(sym, libname=None):

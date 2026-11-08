@@ -1,0 +1,20 @@
+set(srcs "main.c" "board.c" "console.c" "os8104.c" "pcm5122.c" "audio.c" "most.c" "amp.c" "selftest.c" "src.c"
+         "phone.c" "wcred.c" "webcfg.c" "raop.c" "raop_key.c" "dsp.c" "ota.c" "music.c" "learn.c" "power.c")
+if(CONFIG_BT_ENABLED)
+    list(APPEND srcs "a2dp.c")
+endif()
+if(CONFIG_ETH_USE_OPENETH)
+    list(APPEND srcs "vphone.c" "wifi_qemu.c")
+else()
+    list(APPEND srcs "wifi.c")
+endif()
+idf_component_register(SRCS ${srcs} INCLUDE_DIRS ".")
+
+# the selftest runs at boot in the QEMU variant (fw/CMakeLists.txt), or in any build with -DSELFTEST=1
+if(QEMU OR SELFTEST)
+    target_compile_definitions(${COMPONENT_LIB} PRIVATE JLR_SELFTEST=1)
+endif()
+# QEMU's update test: an image that dies before it confirms (docs/firmware.md, "Оновлення по Wi-Fi")
+if(OTA_TEST_CRASH)
+    target_compile_definitions(${COMPONENT_LIB} PRIVATE OTA_TEST_CRASH=1)
+endif()

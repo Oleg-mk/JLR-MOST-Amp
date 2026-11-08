@@ -1,0 +1,3 @@
+# mDNS for AirPlay: iPhones find the receiver by it (Espressif's component registry, fetched by the build)
+dependencies:
+  espressif/mdns: "==1.14.1"

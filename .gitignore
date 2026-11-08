@@ -3,3 +3,5 @@
 fp-info-cache
 *.lck
 __pycache__/
+.history/
+ref/usb2most/fw/main-v24.bin

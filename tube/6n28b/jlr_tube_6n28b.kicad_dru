@@ -1,0 +1,19 @@
+(version 1)
+# Clearances by the real voltage between the nets (IPC-2221 B2 for 151..300 V is 1.25 mm, for 31..150 V 0.6 mm; the
+# board gets a conformal coat, B4 allows 0.4): the net classes give HV 1.25 and MV 0.5 against everything, SW 1.25;
+# inside a group the voltages are close.
+(rule "HV to HV"
+  (condition "A.NetClass == 'HV' && B.NetClass == 'HV'")
+  (constraint clearance (min 0.3mm)))
+(rule "HV to MV"
+  (condition "(A.NetClass == 'HV' && B.NetClass == 'MV') || (A.NetClass == 'MV' && B.NetClass == 'HV')")
+  (constraint clearance (min 0.6mm)))
+(rule "MV to MV"
+  (condition "A.NetClass == 'MV' && B.NetClass == 'MV'")
+  (constraint clearance (min 0.3mm)))
+# the SOT-89 current sources: the tab (cathode, ~104 V) sits 0.3 mm from the gate and source leads by the package
+# itself, which is rated 400 V; inside these footprints the package sets the gap
+(rule "SOT-89 Q2" (condition "A.insideCourtyard('Q2') && B.insideCourtyard('Q2')") (constraint clearance (min 0.25mm)))
+(rule "SOT-89 Q3" (condition "A.insideCourtyard('Q3') && B.insideCourtyard('Q3')") (constraint clearance (min 0.25mm)))
+(rule "SOT-89 Q4" (condition "A.insideCourtyard('Q4') && B.insideCourtyard('Q4')") (constraint clearance (min 0.25mm)))
+(rule "SOT-89 Q5" (condition "A.insideCourtyard('Q5') && B.insideCourtyard('Q5')") (constraint clearance (min 0.25mm)))

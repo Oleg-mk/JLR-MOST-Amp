@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="680" height="1100" viewBox="0 0 680 1100" role="img">
-<title>JLR-MOST-Amp: блок-схема</title>
-<desc>Сигнали: оптика кільця через FOT RX і FOT TX іде на OS8104A; OS8104A віддає приймачі й такти ESP32 і формує S/PDIF на TOSLINK і коаксіал; ESP32 обробляє звук, віддає його на PCM5122 і роз'єм I2S, керує REM. Живлення: +12 В через захист іде на ключ REM і черговий LDO, що живить FOT RX у сні; світло або HOLD від ESP32 вмикає buck 3.3 В і аналоговий LDO.</desc>
+<title>Bitline: блок-схема</title>
+<desc>Сигнали: оптика кільця через FOT RX і FOT TX іде на OS8104A; OS8104A віддає приймачі й такти ESP32 і формує S/PDIF на TOSLINK і коаксіал; ESP32 обробляє звук, віддає його на PCM5122 і HDMI (I2S), керує REM. Живлення: +12 В через захист іде на ключ REM і черговий LDO, що живить FOT RX у сні; світло або HOLD від ESP32 вмикає buck 3.3 В і аналоговий LDO.</desc>
 <defs>
 <style>
 text { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
@@ -54,7 +54,7 @@ text { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
 <text class="th" x="555" y="268" text-anchor="middle" dominant-baseline="central">PCM5122</text>
 <text class="ts" x="555" y="288" text-anchor="middle" dominant-baseline="central">RCA L/R, 2.1 Vrms</text>
 <rect class="box" x="470" y="326" width="170" height="56" rx="8"/>
-<text class="th" x="555" y="344" text-anchor="middle" dominant-baseline="central">Роз'єм I2S</text>
+<text class="th" x="555" y="344" text-anchor="middle" dominant-baseline="central">HDMI: I2S, LVDS</text>
 <text class="ts" x="555" y="364" text-anchor="middle" dominant-baseline="central">MCLK BCK LRCK DATA</text>
 <rect class="box" x="470" y="402" width="170" height="56" rx="8"/>
 <text class="th" x="555" y="420" text-anchor="middle" dominant-baseline="central">Ключ REM</text>

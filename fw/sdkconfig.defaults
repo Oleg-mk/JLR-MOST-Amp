@@ -1,0 +1,44 @@
+# ESP32-WROVER-IE-N16R8: 16 MB flash, 8 MB PSRAM
+CONFIG_IDF_TARGET="esp32"
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_USE_MALLOC=y
+# no PSRAM test before app_main: it takes ~1 s and delays HOLD and the start on the ring
+CONFIG_SPIRAM_MEMTEST=n
+# the module's ESP32-D0WD-V3 die needs no PSRAM cache workaround
+CONFIG_ESP32_REV_MIN_3=y
+# OTA rollback lives in the bootloader, which OTA can never update: on from the first unit. Each OTA image must call
+# esp_ota_mark_app_valid_cancel_rollback() after its self-test, else the bootloader returns to the previous image
+CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
+CONFIG_FREERTOS_HZ=1000
+CONFIG_BOOTLOADER_LOG_LEVEL_WARN=y
+# the phone (docs/firmware.md, stage 6): Bluetooth Classic only, A2DP sink with the stack's SBC decoder
+CONFIG_BT_ENABLED=y
+CONFIG_BTDM_CTRL_MODE_BR_EDR_ONLY=y
+CONFIG_BT_CLASSIC_ENABLED=y
+CONFIG_BT_A2DP_ENABLE=y
+CONFIG_BT_BLE_ENABLED=n
+# Wi-Fi (docs/firmware.md, "Wi-Fi"): with Bluetooth on, IRAM and static DRAM are tight. Wi-Fi and lwIP code run from
+# flash, their buffers go to PSRAM: sound rates do not need the throughput that the IRAM placement buys
+CONFIG_ESP_WIFI_IRAM_OPT=n
+CONFIG_ESP_WIFI_RX_IRAM_OPT=n
+CONFIG_LWIP_IRAM_OPTIMIZATION=n
+CONFIG_SPIRAM_TRY_ALLOCATE_WIFI_LWIP=y
+# phones' captive-portal checks send long headers
+CONFIG_HTTPD_MAX_REQ_HDR_LEN=1024
+# sockets: the page, AirPlay (3 UDP, RTSP listener and sessions), the captive DNS, the iPhone's remote control;
+# 10 ran out ("Перемикання джерел"). AirPlay's packets wait in a 32-deep queue: 256 ms while their task is busy
+CONFIG_LWIP_MAX_SOCKETS=16
+CONFIG_LWIP_UDP_RECVMBOX_SIZE=32
+# cold buffers marked EXT_RAM_BSS_ATTR (the emulation's stored arrays, the selftest's) go to PSRAM
+CONFIG_SPIRAM_ALLOW_BSS_SEG_EXTERNAL_MEMORY=y
+# for the car (docs/firmware.md, "Нотатки"): a task that hangs - the OS8104A's interrupt task, the amplifier's,
+# the sound and the power tasks are watched - reboots the board instead of leaving a deaf node in the ring
+CONFIG_ESP_TASK_WDT_PANIC=y
+# the I2S interrupt runs while the flash is busy (an NVS write, OTA) and the DMA then sends zeros, not its last buffer.
+# The sound task itself stands still with the cache, like everything else in flash: a sector erase (tens of ms) is a
+# gap in the sound, so an update mutes the output first (webcfg.c); an NVS commit erases a page only when one fills
+CONFIG_I2S_ISR_IRAM_SAFE=y
